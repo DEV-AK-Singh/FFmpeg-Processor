@@ -27,8 +27,39 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  apps/worker:
+    dependencies:
+      '@repo/ffmpeg':
+        specifier: workspace:*
+        version: link:../../packages/ffmpeg
+      '@repo/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+    devDependencies:
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
+      '@types/node':
+        specifier: ^25.0.2
+        version: 25.0.2
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/config:
     devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/ffmpeg:
+    devDependencies:
+      '@types/node':
+        specifier: ^25.0.2
+        version: 25.0.2
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
