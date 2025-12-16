@@ -1,0 +1,27 @@
+# Logs
+logs
+*.log
+npm-debug.log* 
+.pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+# If the virtual store is in the root (default is node_modules/.pnpm), add this:
+.pnpm-store/
+
+# Distribution/Build folders
+dist/ 
+.cache/
+
+# Environment variables
+.env
+.env.test
+
+# IDE and OS files
+.idea/
+.vscode/ 
+.DS_Store 
+
+# Optional npm cache directory
+.npm
+ 
