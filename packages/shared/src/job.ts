@@ -4,8 +4,8 @@ export interface BaseJob {
   id: string;
   inputPath: string;
   outputPath: string;
-  operation: JobOperation;
   status: JobStatus;
+  operation: JobOperation;
   createdAt: number;
   updatedAt: number;
 }
