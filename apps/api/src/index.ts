@@ -7,12 +7,14 @@ import {
     redis,
     VideoJob
 } from "@repo/shared";
-import { jobStore } from "./jobStore";
+import { jobStore } from "./jobStore.js";
+import "dotenv/config";
 
 const app = express();
 app.use(express.json());
 
 // const WORKER_URL = "http://localhost:4000";
+const PORT = Number(process.env.API_PORT || 3000);
 
 app.post("/jobs", async (req, res) => {
     const { operation, inputPath, outputPath, params } = req.body;
@@ -104,6 +106,6 @@ app.get("/health", (_req, res) => {
     res.json({ status: "ok" });
 });
 
-app.listen(3000, () => {
-    console.log("API running on http://localhost:3000");
+app.listen(PORT, () => {
+    console.log(`API running on http://localhost:${PORT}`);
 });

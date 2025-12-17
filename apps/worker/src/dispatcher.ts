@@ -2,9 +2,9 @@ import {
   VideoJob,
   JobOperation
 } from "@repo/shared";
-import { handleTrim } from "./operations/trim";
-import { handleResize } from "./operations/resize";
-import { handleExtractAudio } from "./operations/extractAudio";
+import { handleTrim } from "./operations/trim.js";
+import { handleResize } from "./operations/resize.js";
+import { handleExtractAudio } from "./operations/extractAudio.js";
 
 export async function dispatchJob(job: VideoJob) {
   switch (job.operation) {

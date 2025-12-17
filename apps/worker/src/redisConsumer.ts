@@ -1,8 +1,9 @@
 import { redis, VideoJob } from "@repo/shared";
-import { dispatchJob } from "./dispatcher";
 import { JobStatus } from "@repo/shared";
+import { dispatchJob } from "./dispatcher.js";
+import 'dotenv/config';
 
-const API_URL = "http://localhost:3000";
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 export async function startConsumer() {
     console.log("Worker waiting for jobs...");

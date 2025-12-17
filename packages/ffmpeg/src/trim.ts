@@ -18,7 +18,10 @@ export function trimVideo(
 
     const ffmpeg = spawn("ffmpeg", args);
 
-    ffmpeg.on("error", reject);
+    ffmpeg.on("error", (err) => {
+      console.error(err);
+      reject(err);
+    });
 
     ffmpeg.on("close", (code) => {
       if (code === 0) resolve();

@@ -1,4 +1,4 @@
-import { JobOperation, JobStatus } from "./enums";
+import { JobOperation, JobStatus } from "./enums.js";
 
 export interface BaseJob {
   id: string;

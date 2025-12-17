@@ -1,9 +1,10 @@
 import express from "express";
-import { checkFFmpeg } from "./ffmpegCheck";
+import { checkFFmpeg } from "./ffmpegCheck.js";
 import { VideoJob, JobStatus } from "@repo/shared";
-import { enqueue, registerExecutor } from "./jobQueue";
-import { dispatchJob } from "./dispatcher";
-import { startConsumer } from "./redisConsumer";
+import { enqueue, registerExecutor } from "./jobQueue.js";
+import { dispatchJob } from "./dispatcher.js";
+import { startConsumer } from "./redisConsumer.js";
+import "dotenv/config";
 
 checkFFmpeg();
 startConsumer();
@@ -11,7 +12,7 @@ startConsumer();
 const app = express();
 app.use(express.json());
 
-const API_URL = "http://localhost:3000";
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const args = process.argv.slice(2);
 const delayArg = args.find(arg => arg.startsWith('--delay='));
@@ -62,6 +63,6 @@ registerExecutor(async (job) => {
 //   });
 // });
 
-app.listen(4000, () => {
-  console.log("Worker running on http://localhost:4000");
-});
+// app.listen(4000, () => {
+//   console.log("Worker running on http://localhost:4000");
+// });

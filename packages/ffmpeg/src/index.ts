@@ -1,3 +1,3 @@
-export * from "./trim";
-export * from "./resize";
-export * from "./extractAudio";
+export * from "./trim.js";
+export * from "./resize.js";
+export * from "./extractAudio.js";

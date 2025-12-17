@@ -29,3 +29,4 @@ upload
 output
 
 pnpm-lock.yaml
+apps/*/.env
