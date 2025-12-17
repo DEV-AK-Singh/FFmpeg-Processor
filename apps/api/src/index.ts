@@ -10,6 +10,8 @@ import { jobStore } from "./jobStore";
 const app = express();
 app.use(express.json());
 
+const WORKER_URL = "http://localhost:4000";
+
 app.post("/jobs", (req, res) => {
     const { operation, inputPath, outputPath, params } = req.body;
 
@@ -57,25 +59,37 @@ app.post("/jobs", (req, res) => {
     }
 
     jobStore.add(job);
-    res.status(201).json(job);
+
+    try {
+        fetch(`${WORKER_URL}/execute`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(job)
+        });
+    } catch (err) {
+        console.error("Worker call failed", err);
+    }
+
+    res.status(202).json({
+        jobId: job.id,
+        status: job.status
+    });
 });
 
-app.put("/jobs/:id", (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    const job = jobStore.get(id);
+app.get("/jobs/:id", (req, res) => {
+    const job = jobStore.get(req.params.id);
 
     if (!job) {
         return res.status(404).json({ error: "Job not found" });
     }
 
-    job.status = status;
-    job.updatedAt = Date.now();
-
-    jobStore.update(id, job);
-
     res.json(job);
+});
+
+app.put("/internal/jobs/:id", (req, res) => {
+    const job = req.body;
+    jobStore.update(job);
+    res.sendStatus(204);
 });
 
 app.get("/jobs", (_req, res) => {

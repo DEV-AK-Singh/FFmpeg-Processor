@@ -9,8 +9,8 @@ export const jobStore = {
     getAll() {
         return Array.from(jobs.values());
     },
-    update(id: string, job: VideoJob) {
-        jobs.set(id, job);
+    update(job: VideoJob) {
+        jobs.set(job.id, job);
     },
     get(id: string) {
         console.log(id, jobs);
