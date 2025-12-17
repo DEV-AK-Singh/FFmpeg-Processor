@@ -27,3 +27,5 @@ dist/
  
 upload
 output
+
+pnpm-lock.yaml

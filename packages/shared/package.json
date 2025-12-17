@@ -6,10 +6,12 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
-  }, 
+  },
   "license": "ISC",
   "packageManager": "pnpm@10.26.0",
   "devDependencies": {
+    "@types/ioredis": "^5.0.0",
+    "ioredis": "^5.8.2",
     "typescript": "^5.9.3"
   }
 }

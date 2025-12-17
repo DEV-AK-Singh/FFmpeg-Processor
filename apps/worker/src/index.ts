@@ -3,8 +3,10 @@ import { checkFFmpeg } from "./ffmpegCheck";
 import { VideoJob, JobStatus } from "@repo/shared";
 import { enqueue, registerExecutor } from "./jobQueue";
 import { dispatchJob } from "./dispatcher";
+import { startConsumer } from "./redisConsumer";
 
 checkFFmpeg();
+startConsumer();
 
 const app = express();
 app.use(express.json());
@@ -50,19 +52,15 @@ registerExecutor(async (job) => {
   });
 });
 
-
-app.post("/execute", async (req, res) => {
-  const job: VideoJob = req.body;
-
-  console.log("Received job:", job.id);
-
-  enqueue(job);
-
-  res.status(202).json({
-    message: "Job queued",
-    jobId: job.id
-  });
-});
+// app.post("/execute", async (req, res) => {
+//   const job: VideoJob = req.body; 
+//   console.log("Received job:", job.id); 
+//   enqueue(job); 
+//   res.status(202).json({
+//     message: "Job queued",
+//     jobId: job.id
+//   });
+// });
 
 app.listen(4000, () => {
   console.log("Worker running on http://localhost:4000");

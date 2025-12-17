@@ -15,10 +15,12 @@
   "dependencies": {
     "@repo/ffmpeg": "workspace:*",
     "@repo/shared": "workspace:*",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "ioredis": "^5.8.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/ioredis": "^5.0.0",
     "@types/node": "^25.0.2",
     "typescript": "^5.9.3"
   }

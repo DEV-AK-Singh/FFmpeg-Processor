@@ -3,6 +3,8 @@ import { randomUUID } from "crypto";
 import {
     JobOperation,
     JobStatus,
+    QUEUE_NAME,
+    redis,
     VideoJob
 } from "@repo/shared";
 import { jobStore } from "./jobStore";
@@ -10,9 +12,9 @@ import { jobStore } from "./jobStore";
 const app = express();
 app.use(express.json());
 
-const WORKER_URL = "http://localhost:4000";
+// const WORKER_URL = "http://localhost:4000";
 
-app.post("/jobs", (req, res) => {
+app.post("/jobs", async (req, res) => {
     const { operation, inputPath, outputPath, params } = req.body;
 
     const baseJob = {
@@ -58,17 +60,19 @@ app.post("/jobs", (req, res) => {
             return res.status(400).json({ error: "Invalid operation" });
     }
 
-    jobStore.add(job);
+    jobStore.add(job); 
+    
+    // try {
+    //     fetch(`${WORKER_URL}/execute`, {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify(job)
+    //     });
+    // } catch (err) {
+    //     console.error("Worker call failed", err);
+    // }
 
-    try {
-        fetch(`${WORKER_URL}/execute`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(job)
-        });
-    } catch (err) {
-        console.error("Worker call failed", err);
-    }
+    await redis.lpush(QUEUE_NAME, JSON.stringify(job));
 
     res.status(202).json({
         jobId: job.id,
