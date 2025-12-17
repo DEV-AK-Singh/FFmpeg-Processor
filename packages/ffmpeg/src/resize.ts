@@ -11,6 +11,7 @@ export function resizeVideo(
       "-y",
       "-i", inputPath,
       "-vf", `scale=${width}:${height}`,
+      "-c:a", "copy",
       outputPath
     ];
 

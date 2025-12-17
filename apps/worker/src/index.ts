@@ -1,6 +1,7 @@
 import express from "express";
 import { checkFFmpeg } from "./ffmpegCheck";
-import { VideoJob, JobStatus, JobOperation } from "@repo/shared";
+import { VideoJob, JobStatus } from "@repo/shared";
+import { enqueue, registerExecutor } from "./jobQueue";
 import { dispatchJob } from "./dispatcher";
 
 checkFFmpeg();
@@ -13,11 +14,7 @@ const API_URL = "http://localhost:3000";
 const args = process.argv.slice(2);
 const delayArg = args.find(arg => arg.startsWith('--delay='));
 
-app.post("/execute", async (req, res) => {
-  const job: VideoJob = req.body;
-
-  console.log("Received job:", job.id);
-
+registerExecutor(async (job) => {
   try {
     job.status = JobStatus.PROCESSING;
     job.updatedAt = Date.now();
@@ -40,6 +37,8 @@ app.post("/execute", async (req, res) => {
     job.status = JobStatus.COMPLETED;
     job.updatedAt = Date.now();
   } catch (error) {
+    console.error("Error executing job:", job.id, error);
+
     job.status = JobStatus.FAILED;
     job.updatedAt = Date.now();
   }
@@ -49,8 +48,20 @@ app.post("/execute", async (req, res) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(job)
   });
+});
 
-  res.json(job);
+
+app.post("/execute", async (req, res) => {
+  const job: VideoJob = req.body;
+
+  console.log("Received job:", job.id);
+
+  enqueue(job);
+
+  res.status(202).json({
+    message: "Job queued",
+    jobId: job.id
+  });
 });
 
 app.listen(4000, () => {
